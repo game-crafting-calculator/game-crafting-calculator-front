@@ -1,0 +1,26 @@
+.custom-button{
+  padding: 10px 15px;
+  background-color: white;
+  border: none;
+  border-radius: 3px;
+
+  font-weight: bold;
+}
+
+.custom-button:active{
+  transform: scale(0.90);
+}
+
+.custom-button.success{
+  background-color: #1A9443;
+  color: white;
+}
+
+.custom-button.error{
+  background-color: rgb(252, 6, 6);
+    color: white;
+}
+
+.custom-button.warn{
+  background-color: rgb(255, 196, 0);
+}
