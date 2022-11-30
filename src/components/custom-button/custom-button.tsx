@@ -1,20 +1,16 @@
 import React from "react";
 import "./custom-button.css";
 
-interface CustomButtonProps {
-  type?: string;
-  text?: string;
-  action?: Function;
-}
-
-export default function CustomButton({
-  type,
-  text,
-  action,
-}: CustomButtonProps) {
+export default function CustomButton(props: any) {
   return (
     <>
-      <button className={`custom-button ${type}`}>{text}</button>
+      <button
+        onClick={props.onClick}
+        type={props.type}
+        className={`custom-button ${props.theme}`}
+      >
+        {props.text}
+      </button>
     </>
   );
 }
