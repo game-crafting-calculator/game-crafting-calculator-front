@@ -1,2 +1,2 @@
-export const API_URL = "http://localhost:3000/api";
-export const USER_ROUTE = "user";
+export const API_URL = "http://192.168.0.40:3000/api";
+export const USER_ROUTE = "auth";
