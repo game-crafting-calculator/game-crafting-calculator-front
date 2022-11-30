@@ -1,0 +1,18 @@
+.custom-text-input{
+  padding: 7px 15px;
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+
+  font-weight: bold;
+}
+
+
+
+.custom-text-input.valid{
+  border-color: green;
+}
+
+.custom-text-input.invalid{
+  border-color: red;
+}
