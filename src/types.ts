@@ -12,3 +12,12 @@ export interface User extends IObjectKeys {
   last_connection?: Date;
   verified?: Boolean;
 }
+
+export interface FormFieldError {
+  message: string;
+  isValid: boolean;
+}
+
+export interface FormFieldValid {
+  isValid: boolean;
+}
