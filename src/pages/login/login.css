@@ -1,0 +1,41 @@
+
+.login{
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 10px;
+}
+
+.login form{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.login .field{
+  background-color: rgba(241, 240, 240, 0.815);
+  border-radius: 10px;
+
+  padding: 10px 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.login h1{
+  text-align: center;
+}
+
+
+/* .login .field.error{
+  background-color: rgba(255, 0, 0, 0.096);
+} */
+
+.login span{
+  height: 18.4px;
+}
+
+.login span.error{
+  color: red;
+}
