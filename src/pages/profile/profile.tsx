@@ -4,10 +4,10 @@ import { User, FormFieldError, FormFieldValid } from "../../types";
 import CustomButton from "../../components/custom-button/custom-button";
 import CustomTextInput from "../../components/custom-text-input/custom-text-input";
 
-import "./register.css";
+import "./profile.css";
 import validateEmail from "../../utils/email-validator";
 
-export default function Register() {
+export default function Profile() {
   //STATES
   const [formValues, setFormValues] = useState<User>({
     username: "",
@@ -15,6 +15,7 @@ export default function Register() {
     password: "",
     confirmPassword: "",
   });
+
   const [formErrors, setFormErrors] = useState<any>({});
 
   //EFFECTS
@@ -110,14 +111,14 @@ export default function Register() {
     return true;
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
 
     if (!validateForm()) {
       return;
     }
 
-    userService.register(formValues);
+    let response = await userService.updateProfile(formValues);
   };
 
   const getValidity = (fieldName: string) => {
@@ -129,11 +130,19 @@ export default function Register() {
   };
 
   const getLabelText = (fieldName: string) => {
-    if (fieldName === "confirmPassword") {
-      return "Confirm password";
-    }
+    switch (fieldName) {
+      case "oldPassword":
+        return "Old password";
+        break;
 
-    return fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
+      case "newPassword":
+        return "New password";
+        break;
+
+      default:
+        return fieldName;
+        break;
+    }
   };
 
   const getErrorCSSClass = (fieldName: string) => {
@@ -143,16 +152,17 @@ export default function Register() {
 
   //TEMPLATE
   return (
-    <div className="register">
-      <h1>Register</h1>
+    <div className="profile">
+      <h1>Profile</h1>
       <form onSubmit={handleSubmit}>
-        {["username", "email", "password", "confirmPassword"].map((e: any) => {
+        {["username", "email", "oldPassword", "newPassword"].map((e: any) => {
           let inputTypes: any = {
             username: "text",
             email: "text",
             password: "password",
             confirmPassword: "password",
           };
+
           return (
             <div className={"field " + getErrorCSSClass(e)}>
               <label htmlFor={e}>{getLabelText(e)}</label>
@@ -168,7 +178,8 @@ export default function Register() {
             </div>
           );
         })}
-        <CustomButton text="Create Account" type="submit" theme="success" />
+
+        <CustomButton text="Update Account" type="submit" theme="success" />
       </form>
     </div>
   );

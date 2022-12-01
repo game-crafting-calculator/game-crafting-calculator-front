@@ -1,18 +1,18 @@
 
-.register{
+.profile{
   display: flex;
   flex-direction: column;
   padding: 10px;
   gap: 10px;
 }
 
-.register form{
+.profile form{
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-.register .field{
+.profile .field{
   background-color: rgba(241, 240, 240, 0.815);
   border-radius: 10px;
 
@@ -23,19 +23,19 @@
   gap: 10px;
 }
 
-.register h1{
+.profile h1{
   text-align: center;
 }
 
 
-/* .register .field.error{
+/* .profile .field.error{
   background-color: rgba(255, 0, 0, 0.096);
 } */
 
-.register span{
+.profile span{
   height: 18.4px;
 }
 
-.register span.error{
+.profile span.error{
   color: red;
 }
