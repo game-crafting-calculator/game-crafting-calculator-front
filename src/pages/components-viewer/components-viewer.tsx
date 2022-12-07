@@ -6,7 +6,6 @@ import userService from "../../services/user-service";
 export default function ComponentsViewer() {
   const test = () => {
     console.log("aaaaaaaaaaaaa");
-    userService.login({ email: "osef", password: "osef également" });
   };
 
   return (

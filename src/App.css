@@ -1,3 +1,30 @@
-*{
-  font-family: sans-serif;
+.app{
+  width: 100vw;
+}
+
+.navbar{
+
+  position: absolute;
+  bottom: 0;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  height: 40px;
+  padding: 5px;
+  box-sizing: border-box;
+
+
+  /* position: absolute; */
+  bottom: 0;
+  width: 100%;
+  color: white;
+  background-color: #2980b9;
+  font-size: 1.5rem;
+}
+
+.navbar a{
+  color: white;
+  display: flex;  
 }

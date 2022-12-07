@@ -23,7 +23,9 @@ export default function CustomTextInput(props: any) {
         placeholder={props.placeholder}
         onChange={(event) => props.onChange(event)}
         name={props.name}
+        value={props.value}
         id={props.id}
+        size={props.size}
       />
     </>
   );

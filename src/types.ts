@@ -13,11 +13,11 @@ export interface User extends IObjectKeys {
   verified?: Boolean;
 }
 
-export interface FormFieldError {
+export interface FormFieldError extends IObjectKeys {
   message: string;
   isValid: boolean;
 }
 
-export interface FormFieldValid {
+export interface FormFieldValid extends IObjectKeys {
   isValid: boolean;
 }
