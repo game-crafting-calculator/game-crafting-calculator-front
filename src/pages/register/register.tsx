@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import userService from "../../services/user-service";
 import { User, FormFieldError, FormFieldValid } from "../../types";
 import CustomButton from "../../components/custom-button/custom-button";
@@ -6,6 +6,7 @@ import CustomTextInput from "../../components/custom-text-input/custom-text-inpu
 
 import "./register.css";
 import validateEmail from "../../utils/email-validator";
+import { UserContext } from "../../global-context";
 
 export default function Register() {
   //STATES
@@ -15,7 +16,10 @@ export default function Register() {
     password: "",
     confirmPassword: "",
   });
+
   const [formErrors, setFormErrors] = useState<any>({});
+
+  const [user, setUser] = useContext(UserContext);
 
   //EFFECTS
   useEffect(() => {
@@ -110,14 +114,18 @@ export default function Register() {
     return true;
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
 
     if (!validateForm()) {
       return;
     }
 
-    userService.register(formValues);
+    let result = await userService.register(formValues);
+
+    if (result) {
+      window.location.reload();
+    }
   };
 
   const getValidity = (fieldName: string) => {

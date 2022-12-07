@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import userService from "../../services/user-service";
 import { User, FormFieldError, FormFieldValid } from "../../types";
 import CustomButton from "../../components/custom-button/custom-button";
@@ -6,7 +6,8 @@ import CustomTextInput from "../../components/custom-text-input/custom-text-inpu
 
 import "./login.css";
 import validateEmail from "../../utils/email-validator";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate, Router } from "react-router-dom";
+import { UserContext } from "../../global-context";
 
 export default function Login() {
   //STATES
@@ -15,6 +16,8 @@ export default function Login() {
     password: "",
   });
   const [formErrors, setFormErrors] = useState<any>({});
+
+  const [user, setUser] = useContext(UserContext);
 
   //EFFECTS
   useEffect(() => {
@@ -98,9 +101,11 @@ export default function Login() {
       return;
     }
 
-    let result = await userService.login(formValues);
+    let [result, data] = await userService.login(formValues);
     if (result) {
-      window.location.reload(false);
+      let { username, email, registration_date } = data;
+      setUser({ username, email, registration_date });
+      console.log(data);
     }
   };
 
@@ -147,6 +152,9 @@ export default function Login() {
           );
         })}
         <CustomButton text="Sign in" type="submit" theme="success" />
+        <p>
+          New to our website ? <Link to={"/register"}>Create an account</Link>
+        </p>
       </form>
     </div>
   );

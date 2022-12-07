@@ -26,22 +26,51 @@ const login = async (user: User) => {
 
   if (response.status === 200) {
     setToken(response.data.token);
-    return true;
+    return [true, response.data];
   } else {
-    return false;
+    return [false];
   }
 };
 
 const updateProfile = async (user: User) => {
-  return axios.put(`${URL}/update`, user, config);
+  const response = await axios.put(`${URL}/profile`, user, config);
+
+  if (response.status === 200) {
+    return [true, response.data];
+  } else {
+    return [false];
+  }
 };
 
 const deleteAccount = async (user: User) => {
-  return axios.delete(`${URL}/delete`, config);
+  const response = await axios.delete(`${URL}/delete`, config);
+
+  if (response.status === 200) {
+    return [true, response.data];
+  } else {
+    return [false];
+  }
+};
+
+const getProfile = async (user: User) => {
+  const response = await axios.get(`${URL}/profile`, config);
+
+  if (response.status === 200) {
+    return [true, response.data];
+  } else {
+    return [false];
+  }
 };
 
 //Auth
 const isLoggedIn = () => {
   return getToken() ? true : false;
 };
-export default { register, login, updateProfile, deleteAccount, isLoggedIn };
+export default {
+  register,
+  login,
+  updateProfile,
+  deleteAccount,
+  isLoggedIn,
+  getProfile,
+};

@@ -1,6 +1,4 @@
-import "./App.css";
-
-//ROUTER IMPORTS
+//router imports
 import {
   BrowserRouter as Router,
   Routes,
@@ -9,14 +7,35 @@ import {
   Navigate,
 } from "react-router-dom";
 
-import React, { Fragment, useState } from "react";
+//react imports
+import React, { Context, createContext, Fragment, useState } from "react";
 
-//PAGES
+//import pages components
 import ComponentsViewer from "./pages/components-viewer/components-viewer";
 import Register from "./pages/register/register";
 import Login from "./pages/login/login";
+import Profile from "./pages/profile/profile";
+
+//import services
 import userService from "./services/user-service";
 
+//types import
+import { User } from "./types";
+
+//global context import
+import { UserContext } from "./global-context";
+
+//import icons
+import { CgProfile } from "react-icons/cg";
+import { FaList } from "react-icons/fa";
+import { AiOutlineHome } from "react-icons/ai";
+
+//import CSS
+import "./App.css";
+import useVH from "react-viewport-height";
+import Recipe from "./pages/recipe/recipe";
+
+//Functions
 function ProtectedPage(props: any) {
   const authGuard = (component: any) => {
     return userService.isLoggedIn() ? component : props.unloggedElement;
@@ -25,43 +44,90 @@ function ProtectedPage(props: any) {
 }
 
 function App() {
+  //Global States
+  const [user, setUser] = useState<User>({});
+
   return (
-    <Router>
-      <Routes>
-        {/* Root */}
-        <Route path="/" element={<Navigate to="/viewer" />} />
+    <UserContext.Provider value={[user, setUser]}>
+      <Router>
+        <div className="app">
+          <div className="page">
+            <Routes>
+              {/* Root */}
+              <Route path="/" element={<Navigate to="/viewer" />} />
 
-        {/* Unprotected routes */}
-        <Route path="/register" element={<Register />}></Route>
+              {/* Unprotected Routes */}
+              <Route path="/recipe/" element={<Recipe />} />
+              <Route path="/recipe/:id" element={<Recipe />} />
 
-        {/* Allow login route only if user not logged in */}
-        <Route
-          path="/login"
-          element={
-            <ProtectedPage
-              unloggedElement={<Login />}
-              element={<Navigate to="/" />}
-            />
-          }
-        />
+              {/* Allow register route only if user not logged in */}
+              <Route
+                path="/register"
+                element={
+                  <ProtectedPage
+                    unloggedElement={<Register />}
+                    element={<Navigate to="/" />}
+                  />
+                }
+              />
 
-        {/* Protected routes */}
-        <Route
-          path="/viewer"
-          element={
-            <ProtectedPage
-              unloggedElement={<Navigate to="/login" />}
-              element={<ComponentsViewer />}
-            />
-          }
-        />
+              {/* Allow login route only if user not logged in */}
+              <Route
+                path="/login"
+                element={
+                  <ProtectedPage
+                    unloggedElement={<Login />}
+                    element={<Navigate to="/" />}
+                  />
+                }
+              />
 
-        {/* route to protect later */}
+              {/* Protected routes */}
+              <Route
+                path="/viewer"
+                element={
+                  <ProtectedPage
+                    unloggedElement={<Navigate to="/login" />}
+                    element={<ComponentsViewer />}
+                  />
+                }
+              />
 
-        {/* Fallback route aka 404 */}
-        <Route path="*" element={<h1>404 Page not found</h1>}></Route>
-      </Routes>
-    </Router>
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedPage
+                    unloggedElement={<Navigate to="/login" />}
+                    element={<Profile />}
+                  />
+                }
+              />
+
+              {/* Fallback route aka 404 */}
+              <Route
+                path="*"
+                element={
+                  <div>
+                    <h1>404 Page not found</h1>
+                  </div>
+                }
+              ></Route>
+            </Routes>
+          </div>
+          <div className="navbar">
+            <Link to={"/"}>
+              <AiOutlineHome />
+            </Link>
+            <Link to={"/profile"}>
+              <CgProfile />
+            </Link>
+            <Link to={"/recipes"}>
+              <FaList />
+            </Link>
+          </div>
+        </div>
+      </Router>
+    </UserContext.Provider>
   );
 }
 

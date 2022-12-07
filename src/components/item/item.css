@@ -1,0 +1,11 @@
+.item{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.item .result{
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
