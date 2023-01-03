@@ -36,7 +36,7 @@ import Recipe from "./pages/recipe/recipe";
 import Bookmarks from "./pages/bookmarks/bookmarks";
 
 //import assets
-import backgroundImage from "./assets/background_image.jpg";
+import backgroundImage from "/background_image.jpg";
 import { getToken } from "./services/local-storage-service";
 
 //Functions
