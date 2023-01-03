@@ -2,7 +2,7 @@
 .register{
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  /* padding: 10px; */
   gap: 10px;
 }
 

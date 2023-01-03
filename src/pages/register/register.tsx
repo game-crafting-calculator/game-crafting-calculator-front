@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import userService from "../../services/user-service";
 import { User, FormFieldError, FormFieldValid } from "../../types";
 import CustomButton from "../../components/custom-button/custom-button";
 import CustomTextInput from "../../components/custom-text-input/custom-text-input";
@@ -7,8 +6,14 @@ import CustomTextInput from "../../components/custom-text-input/custom-text-inpu
 import "./register.css";
 import validateEmail from "../../utils/email-validator";
 import { UserContext } from "../../global-context";
+import { useNavigate } from "react-router-dom";
+import { setToken } from "../../services/local-storage-service";
+import apiService from "../../services/api-service";
 
 export default function Register() {
+  //navigate
+  const navigate = useNavigate();
+
   //STATES
   const [formValues, setFormValues] = useState<User>({
     username: "",
@@ -121,10 +126,14 @@ export default function Register() {
       return;
     }
 
-    let result = await userService.register(formValues);
+    try {
+      let response = await apiService.user.register(formValues);
+      navigate("/login");
 
-    if (result) {
-      window.location.reload();
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
     }
   };
 
@@ -133,7 +142,7 @@ export default function Register() {
       return undefined;
     }
 
-    return formErrors[fieldName].isValid;
+    return formErrors[fieldName];
   };
 
   const getLabelText = (fieldName: string) => {
@@ -161,19 +170,18 @@ export default function Register() {
             password: "password",
             confirmPassword: "password",
           };
+
           return (
-            <div className={"field " + getErrorCSSClass(e)}>
-              <label htmlFor={e}>{getLabelText(e)}</label>
-              <CustomTextInput
-                type={inputTypes[e]}
-                // placeholder={e}
-                name={e}
-                onChange={handleChange}
-                isValid={getValidity(e)}
-                id={e}
-              />
-              <span className="error">{formErrors[e]?.message || ""}</span>
-            </div>
+            <CustomTextInput
+              type={inputTypes[e]}
+              // placeholder={e}
+              name={e}
+              onChange={handleChange}
+              label={e === "confirmPassword" ? "confirm password" : e}
+              isValid={getValidity(e)?.isValid}
+              error={getValidity(e)?.message}
+              id={e}
+            />
           );
         })}
         <CustomButton text="Create Account" type="submit" theme="success" />

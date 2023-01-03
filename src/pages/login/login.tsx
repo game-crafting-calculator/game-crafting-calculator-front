@@ -1,15 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
-import userService from "../../services/user-service";
 import { User, FormFieldError, FormFieldValid } from "../../types";
 import CustomButton from "../../components/custom-button/custom-button";
 import CustomTextInput from "../../components/custom-text-input/custom-text-input";
 
 import "./login.css";
 import validateEmail from "../../utils/email-validator";
-import { Link, Navigate, Router } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../global-context";
+import apiService from "../../services/api-service";
+import { setToken } from "../../services/local-storage-service";
 
 export default function Login() {
+  //Navigate
+  const navigate = useNavigate();
+
   //STATES
   const [formValues, setFormValues] = useState<User>({
     email: "",
@@ -101,11 +105,14 @@ export default function Login() {
       return;
     }
 
-    let [result, data] = await userService.login(formValues);
-    if (result) {
-      let { username, email, registration_date } = data;
-      setUser({ username, email, registration_date });
-      console.log(data);
+    try {
+      let response = await apiService.user.login(formValues);
+      setToken(response);
+      navigate("/");
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
     }
   };
 
@@ -114,7 +121,7 @@ export default function Login() {
       return undefined;
     }
 
-    return formErrors[fieldName].isValid;
+    return formErrors[fieldName];
   };
 
   const getLabelText = (fieldName: string) => {
@@ -137,24 +144,24 @@ export default function Login() {
             password: "password",
           };
           return (
-            <div className={"field " + getErrorCSSClass(e)}>
-              <label htmlFor={e}>{getLabelText(e)}</label>
-              <CustomTextInput
-                type={inputTypes[e]}
-                // placeholder={e}
-                name={e}
-                onChange={handleChange}
-                isValid={getValidity(e)}
-                id={e}
-              />
-              <span className="error">{formErrors[e]?.message || ""}</span>
-            </div>
+            <CustomTextInput
+              type={inputTypes[e]}
+              label={e}
+              name={e}
+              onChange={handleChange}
+              isValid={getValidity(e)?.isValid}
+              error={getValidity(e)?.message}
+              id={e}
+            />
           );
         })}
         <CustomButton text="Sign in" type="submit" theme="success" />
-        <p>
-          New to our website ? <Link to={"/register"}>Create an account</Link>
-        </p>
+        <CustomButton
+          text="Create an Account"
+          type="button"
+          onClick={() => navigate("/register")}
+          theme="warn"
+        />
       </form>
     </div>
   );
