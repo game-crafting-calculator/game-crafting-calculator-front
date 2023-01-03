@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./custom-text-input.css";
 
 export default function CustomTextInput(props: any) {
+  useEffect(() => {
+    console.log(props.isValid !== undefined);
+  }, [props.isValid]);
+
   const getValidity = () => {
     switch (props.isValid) {
       case true:
@@ -16,9 +20,10 @@ export default function CustomTextInput(props: any) {
   };
 
   return (
-    <>
+    <div className="custom-text-input">
+      <label htmlFor={props.id}>{props.label || ""}</label>
       <input
-        className={`custom-text-input ${getValidity()}`}
+        className={`${getValidity()}`}
         type={props.type}
         placeholder={props.placeholder}
         onChange={(event) => props.onChange(event)}
@@ -27,6 +32,11 @@ export default function CustomTextInput(props: any) {
         id={props.id}
         size={props.size}
       />
-    </>
+      {props.isValid || props.isValid === undefined ? (
+        <></>
+      ) : (
+        <p className="error">{props.error || "invalid"}</p>
+      )}
+    </div>
   );
 }

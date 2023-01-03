@@ -1,45 +1,55 @@
-.profile{
+.profile {
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  align-items: center;
+  /* padding: 10px; */
   gap: 10px;
 }
 
-.profile h1{
+.profile h1 {
   text-align: center;
 }
 
-.profile .data{
+.profile .data {
+  width: 330px;
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 20px;
 }
 
-.profile p, .profile h2 {
+.profile p,
+.profile h2 {
   margin: 0;
 }
 
-.profile.edit form{
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.profile.edit .field{
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.profile.edit label{
-  margin-left: 15px;
+.profile.edit {
   font-size: 0.8rem;
   font-weight: bolder;
 }
 
-.profile.edit{
-  font-size: 0.8rem;
-  font-weight: bolder;
+.profile.read .field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  justify-content: center;
+
+  background-color: lightgray;
+  border-radius: 10px;
+  padding: 10px 10px;
+}
+
+.profile.read .username {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 5px;
+}
+
+.profile .buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }

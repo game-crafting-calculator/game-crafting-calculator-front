@@ -1,0 +1,11 @@
+.viewer-page{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.viewer-page > *{
+  background-color: lightgray;
+  padding: 10px;
+}

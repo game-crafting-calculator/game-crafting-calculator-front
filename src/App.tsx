@@ -17,7 +17,6 @@ import Login from "./pages/login/login";
 import Profile from "./pages/profile/profile";
 
 //import services
-import userService from "./services/user-service";
 
 //types import
 import { User } from "./types";
@@ -28,17 +27,22 @@ import { UserContext } from "./global-context";
 //import icons
 import { CgProfile } from "react-icons/cg";
 import { FaList } from "react-icons/fa";
-import { AiOutlineHome } from "react-icons/ai";
+import { AiOutlineHome, AiOutlineStar } from "react-icons/ai";
 
 //import CSS
 import "./App.css";
 import useVH from "react-viewport-height";
 import Recipe from "./pages/recipe/recipe";
+import Bookmarks from "./pages/bookmarks/bookmarks";
+
+//import assets
+import backgroundImage from "./assets/background_image.jpg";
+import { getToken } from "./services/local-storage-service";
 
 //Functions
 function ProtectedPage(props: any) {
   const authGuard = (component: any) => {
-    return userService.isLoggedIn() ? component : props.unloggedElement;
+    return getToken() ? component : props.unloggedElement;
   };
   return <Fragment>{authGuard(props.element)}</Fragment>;
 }
@@ -51,14 +55,23 @@ function App() {
     <UserContext.Provider value={[user, setUser]}>
       <Router>
         <div className="app">
+          <div
+            className="background-image"
+            style={{
+              backgroundImage: `linear-gradient(
+            rgba(255, 255, 255, 0.8),
+            rgba(255, 255, 255, 0.8)
+          ),url(${backgroundImage})`,
+            }}
+          ></div>
           <div className="page">
             <Routes>
               {/* Root */}
-              <Route path="/" element={<Navigate to="/viewer" />} />
+              <Route path="/" element={<Navigate to="/recipes" />} />
 
               {/* Unprotected Routes */}
-              <Route path="/recipe/" element={<Recipe />} />
-              <Route path="/recipe/:id" element={<Recipe />} />
+              <Route path="/recipes/" element={<Recipe />} />
+              <Route path="/recipes/:recipe_id" element={<Recipe />} />
 
               {/* Allow register route only if user not logged in */}
               <Route
@@ -103,6 +116,16 @@ function App() {
                 }
               />
 
+              <Route
+                path="/bookmarks"
+                element={
+                  <ProtectedPage
+                    unloggedElement={<Navigate to="/login" />}
+                    element={<Bookmarks />}
+                  />
+                }
+              />
+
               {/* Fallback route aka 404 */}
               <Route
                 path="*"
@@ -117,12 +140,19 @@ function App() {
           <div className="navbar">
             <Link to={"/"}>
               <AiOutlineHome />
+              <p className="navbar-text">Home</p>
             </Link>
             <Link to={"/profile"}>
               <CgProfile />
+              <p className="navbar-text">Profile</p>
             </Link>
-            <Link to={"/recipes"}>
+            {/* <Link to={"/recipes"}>
               <FaList />
+              <p className="navbar-text">Recipes</p>
+            </Link> */}
+            <Link to={"/bookmarks"}>
+              <AiOutlineStar />
+              <p className="navbar-text">Bookmarks</p>
             </Link>
           </div>
         </div>
@@ -132,3 +162,6 @@ function App() {
 }
 
 export default App;
+
+{
+}

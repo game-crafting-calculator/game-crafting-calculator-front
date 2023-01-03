@@ -1,0 +1,22 @@
+.bookmarks {
+  /* padding: 10px 10px; */
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bookmarks > .list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bookmarks .recipe {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  transform: scale(1.2);
+}

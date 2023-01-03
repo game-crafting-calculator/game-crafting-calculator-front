@@ -1,24 +1,31 @@
 import React, { useState, useEffect } from "react";
 import "./calculator.css";
-import CustomTextInput from "../custom-text-input/custom-text-input";
-
 import Item from "../item/item";
-import { naryTreeTraversal, getRecipeTree } from "./calculator.utils";
-import CustomButton from "../custom-button/custom-button";
 
-export default function Calculator() {
-  const [recipe, setRecipe] = useState<any>({});
-  const name = "iron sword";
-
-  useEffect(() => {
-    setRecipe(getRecipeTree(name, 3));
-    console.log(recipe);
-  }, []);
-
-  return (
+export default function Calculator(props: any) {
+  return props.tree.ingredients ? (
     <div className="calculator">
-      <Item tree={recipe} level={1} />
-      <div className="recipe"></div>
+      {props.tree.ingredients ? (
+        props.tree.ingredients.map((e: any) => <Item tree={e} level={0} />)
+      ) : (
+        <></>
+      )}
     </div>
+  ) : (
+    <></>
   );
 }
+
+/*
+recupere l'id de l'item résultat
+
+ajouter une recette avec l'id de l'item résultat et la quantity craftée
+
+Pour chaque ingrédients
+    ajouter l'ingredient dans la table needs
+      - id de l'item en question
+      - quantité
+      - id de la recette
+    
+    
+*/

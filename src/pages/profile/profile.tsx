@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from "react";
-import userService from "../../services/user-service";
 import { User, FormFieldError, FormFieldValid } from "../../types";
 import CustomButton from "../../components/custom-button/custom-button";
 import CustomTextInput from "../../components/custom-text-input/custom-text-input";
@@ -9,7 +8,12 @@ import { UserContext } from "../../global-context";
 import "./profile.css";
 import validateEmail from "../../utils/email-validator";
 
+import { AiOutlineStar } from "react-icons/ai";
+import apiService from "../../services/api-service";
+import { useNavigate } from "react-router-dom";
+
 export default function Profile() {
+  const navigate = useNavigate();
   const [user, setUser] = useContext(UserContext);
 
   const [edit, setEdit] = useState(false);
@@ -45,11 +49,24 @@ export default function Profile() {
   }, [user]);
 
   const getProfile = async () => {
-    const [result, data] = await userService.getProfile(user);
-    data.registration_date = new Date(data.registration_date).toUTCString();
-    data.last_connection = new Date(data.last_connection).toUTCString();
-    setUser(data);
-    setFormData(user);
+    try {
+      let response = await apiService.user.getProfile();
+      response.registration_date = new Date(
+        response.registration_date
+      ).toUTCString();
+
+      response.last_connection = new Date(
+        response.last_connection
+      ).toUTCString();
+
+      setUser(response);
+      setFormData(user);
+
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   };
 
   const validateForm = async () => {
@@ -97,13 +114,14 @@ export default function Profile() {
       return false;
     }
 
-    const [result, data] = await userService.updateProfile(formData);
-    if (result) {
-      setUser((values: any) => ({
-        ...values,
-        username: formData.username,
-        email: formData.email,
-      }));
+    try {
+      let response = await apiService.user.update(formData);
+      await getProfile();
+
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
     }
   };
 
@@ -111,66 +129,60 @@ export default function Profile() {
     <div className="profile edit">
       <h1>Profile</h1>
       <form className="data" onSubmit={submit}>
-        <div className="field username">
-          <label htmlFor="username">Username</label>
-          <CustomTextInput
-            id="username"
-            name="username"
-            type="text"
-            value={formData.username}
-            onChange={handleChange}
-          />
-          <span>{formError.username}</span>
-        </div>
-        <div className="field email">
-          <label htmlFor="email">Email</label>
-          <CustomTextInput
-            id="email"
-            name="email"
-            type="text"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          <span>{formError.email}</span>
-        </div>
-        <div className="field password">
-          <label htmlFor="password">Password</label>
-          <CustomTextInput
-            id="password"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-          <span>{formError.password}</span>
-        </div>
-        <div className="field confirmPassword">
-          <label htmlFor="confirmPassword">Confirm password</label>
-          <CustomTextInput
-            id="confirmPassword"
-            name="confirmPassword"
-            type="password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-          />
-          <span>{formError.confirmPassword}</span>
-        </div>
-
-        <CustomButton type="submit" theme="success" text="Edit profile" />
-        <CustomButton
-          type="submit"
-          theme="warn"
-          text="Cancel"
-          onClick={() => setEdit(false)}
+        {/* <label htmlFor="username">Username</label> */}
+        <CustomTextInput
+          label="username"
+          id="username"
+          name="username"
+          type="text"
+          value={formData.username}
+          onChange={handleChange}
         />
+
+        {/* <label htmlFor="email">Email</label> */}
+        <CustomTextInput
+          label="email"
+          id="email"
+          name="email"
+          type="text"
+          value={formData.email}
+          onChange={handleChange}
+        />
+        {/* <label htmlFor="password">Password</label> */}
+        <CustomTextInput
+          label="password"
+          id="password"
+          name="password"
+          type="password"
+          value={formData.password}
+          onChange={handleChange}
+        />
+        {/* <label htmlFor="confirmPassword">Confirm password</label> */}
+        <CustomTextInput
+          label="confirm password"
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+        />
+        <div className="buttons">
+          <CustomButton type="submit" theme="success" text="Edit profile" />
+          <CustomButton
+            type="submit"
+            theme="warn"
+            text="Cancel"
+            onClick={() => setEdit(false)}
+          />
+        </div>
       </form>
     </div>
   ) : (
-    <div className="profile">
+    <div className="profile read">
       <h1>Profile</h1>
       <div className="data">
-        <div className="username">
-          <h2>{user.username}</h2>
+        <div className="username field">
+          <h2>{user.username || "Username"}</h2>
           <CustomButton
             theme="warn"
             text="Edit"
@@ -180,17 +192,17 @@ export default function Profile() {
             }}
           />
         </div>
-        <div className="email">
+        <div className="email field">
           <p>Email</p>
-          <p>{user.email}</p>
+          <p>{user.email || "example@gmail.com"}</p>
         </div>
-        <div className="registration">
+        <div className="registration field">
           <p>Registration date</p>
-          <p>{user.registration_date}</p>
+          <p>{user.registration_date || new Date().toISOString()}</p>
         </div>
-        <div className="last">
+        <div className="last field">
           <p>Last connection</p>
-          <p>{user.last_connection}</p>
+          <p>{user.last_connection || new Date().toISOString()}</p>
         </div>
       </div>
     </div>
