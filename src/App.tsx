@@ -1,6 +1,6 @@
 //router imports
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
   Link,
@@ -8,7 +8,13 @@ import {
 } from "react-router-dom";
 
 //react imports
-import React, { Context, createContext, Fragment, useState } from "react";
+import React, {
+  Context,
+  createContext,
+  Fragment,
+  useState,
+  useEffect,
+} from "react";
 
 //import pages components
 import ComponentsViewer from "./pages/components-viewer/components-viewer";
@@ -26,12 +32,10 @@ import { UserContext } from "./global-context";
 
 //import icons
 import { CgProfile } from "react-icons/cg";
-import { FaList } from "react-icons/fa";
 import { AiOutlineHome, AiOutlineStar } from "react-icons/ai";
 
 //import CSS
 import "./App.css";
-import useVH from "react-viewport-height";
 import Recipe from "./pages/recipe/recipe";
 import Bookmarks from "./pages/bookmarks/bookmarks";
 
@@ -50,6 +54,9 @@ function ProtectedPage(props: any) {
 function App() {
   //Global States
   const [user, setUser] = useState<User>({});
+  useEffect(() => {
+    console.log(backgroundImage);
+  });
 
   return (
     <UserContext.Provider value={[user, setUser]}>
@@ -58,10 +65,11 @@ function App() {
           <div
             className="background-image"
             style={{
+              // For image url, use relative path starting by ./
               backgroundImage: `linear-gradient(
             rgba(255, 255, 255, 0.8),
             rgba(255, 255, 255, 0.8)
-          ),url(${backgroundImage})`,
+          ),url(./${backgroundImage})`,
             }}
           ></div>
           <div className="page">
@@ -131,7 +139,7 @@ function App() {
                 path="*"
                 element={
                   <div>
-                    <h1>404 Page not found</h1>
+                    <h1>404 Page not foundahahaha</h1>
                   </div>
                 }
               ></Route>
