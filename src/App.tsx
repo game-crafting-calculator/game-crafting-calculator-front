@@ -70,7 +70,7 @@ function App() {
               <Route path="/" element={<Navigate to="/recipes" />} />
 
               {/* Unprotected Routes */}
-              <Route path="/recipes/" element={<Recipe />} />
+              <Route path="/recipes" element={<Recipe />} />
               <Route path="/recipes/:recipe_id" element={<Recipe />} />
 
               {/* Allow register route only if user not logged in */}
