@@ -23,3 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 out
+
+android
+dist
+ios
+capacitor
