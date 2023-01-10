@@ -18,21 +18,32 @@ export default function Recipe() {
 
   useEffect(() => {
     getRecipesList();
-
-    if (recipesList.length === 0) {
-      return;
-    }
-
-    if (!recipe_id) {
-      return;
-    }
-
-    let recipe = recipesList.find((r) => r.recipe_id === recipe_id);
-    setSearchValue(recipe.item_name || "aaaaa");
   }, []);
 
   useEffect(() => {
     console.log({ recipesList });
+    console.warn({ recipe_id });
+    if (recipesList.length === 0) {
+      return;
+    }
+
+    console.warn("aaaaaaaaaaaaaaa");
+
+    if (!recipe_id) {
+      console.warn("no id in url");
+      return;
+    }
+
+    let recipe = recipesList.find((r) => r.recipe_id === Number(recipe_id));
+    console.warn({ recipe });
+
+    if (!recipe) {
+      return;
+    }
+
+    setSearchValue(recipe?.item_name || "aaaaa");
+    setSelectedRecipe(recipe);
+    setSearchQuantity(recipe?.per_craft);
   }, [recipesList]);
 
   useEffect(() => {
@@ -79,7 +90,15 @@ export default function Recipe() {
             type="number"
             // size={3}
             value={searchQuantity}
-            onChange={(e: any) => setSearchQuantity(e.target.value)}
+            min="1"
+            onChange={(e: any) => {
+              let value = e.target.value;
+              if (value < 1 && value !== "") {
+                return;
+              }
+
+              setSearchQuantity(value);
+            }}
           />
           <InputAutocomplete
             placeholder="Search for an item"
