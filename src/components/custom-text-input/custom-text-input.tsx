@@ -31,6 +31,7 @@ export default function CustomTextInput(props: any) {
         value={props.value}
         id={props.id}
         size={props.size}
+        min={props.min}
       />
       {props.isValid || props.isValid === undefined ? (
         <></>
